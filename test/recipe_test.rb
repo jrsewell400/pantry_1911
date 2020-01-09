@@ -31,19 +31,24 @@ class RecipeTest < Minitest::Test
     assert_equal expected, @recipe.ingredients_required
   end
 
+  def test_it_can_return_amount_required
+    @recipe.add_ingredient(@ingredient1, 2)
+    @recipe.add_ingredient(@ingredient2, 8)
+
+    assert_equal 2, @recipe.amount_required(@ingredient1)
+    assert_equal 8, @recipe.amount_required(@ingredient2)
+  end
+
+  def test_it_can_return_ingredients
+    @recipe.add_ingredient(@ingredient1, 2)
+    @recipe.add_ingredient(@ingredient2, 8)
+
+    assert_equal [@ingredient1, @ingredient2], @recipe.ingredients
+  end
+
+  def test_it_can_calculate_total_calories
+    # pry(main)> recipe.total_calories
+    # # => 440
+  end
 
 end
-
-
-#
-# pry(main)> recipe.amount_required(ingredient1)
-# # => 2
-#
-# pry(main)> recipe.amount_required(ingredient2)
-# # => 8
-#
-# pry(main)> recipe.ingredients
-# # => [#<Ingredient:0x007fe8438c7a70...>, #<Ingredient:0x007fe843857f40...>]
-#
-# pry(main)> recipe.total_calories
-# # => 440
