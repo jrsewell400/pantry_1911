@@ -5,29 +5,36 @@ require './lib/recipe'
 
 class RecipeTest < Minitest::Test
 
+  def setup
+    @ingredient1 = Ingredient.new("Cheese", "C", 100)
+    @ingredient2 = Ingredient.new("Macaroni", "oz", 30)
+
+    @recipe = Recipe.new("Mac and Cheese")
+  end
+
+  def test_it_exists
+    assert_instance_of Ingredient, @ingredient1
+    assert_instance_of Ingredient, @ingredient2
+    assert_instance_of Recipe, @recipe
+  end
+
+  def test_it_has_attributes
+    assert_equal "Mac and Cheese", @recipe.name
+    assert_equal Hash.new, @recipe.ingredients_required
+  end
+
+  def test_it_can_add_ingredients
+    @recipe.add_ingredient(@ingredient1, 2)
+    @recipe.add_ingredient(@ingredient2, 8)
+    expected = {@ingredient1 => 2, @ingredient2 => 8}
+
+    assert_equal expected, @recipe.ingredients_required
+  end
+
 
 end
-# pry(main)> ingredient1 = Ingredient.new("Cheese", "C", 100)
-# # => #<Ingredient:0x007fe8438c7a70...>
-#
-# pry(main)> ingredient2 = Ingredient.new("Macaroni", "oz", 30)
-# # => #<Ingredient:0x007fe843857f40...>
-#
-# pry(main)> recipe = Recipe.new("Mac and Cheese")
-# # => #<Recipe:0x007fe84383d000...>
-#
-# pry(main)> recipe.name
-# # => "Mac and Cheese"
-#
-# pry(main)> recipe.ingredients_required
-# # => {}
-#
-# pry(main)> recipe.add_ingredient(ingredient1, 2)
-#
-# pry(main)> recipe.add_ingredient(ingredient2, 8)
-#
-# pry(main)> recipe.ingredients_required
-# # => {#<Ingredient:0x00007fd7811553c8...> => 2, #<Ingredient:0x00007fd78110b0e8...> => 8}
+
+
 #
 # pry(main)> recipe.amount_required(ingredient1)
 # # => 2
