@@ -7,55 +7,46 @@ require './lib/pantry'
 
 class RecipeTest < Minitest::Test
 
-end
+  def setup
+    @pantry = Pantry.new
+    @ingredient1 = Ingredient.new("Cheese", "C", 50)
+    @ingredient2 = Ingredient.new("Macaroni", "oz", 200)
+    @recipe = Recipe.new("Mac and Cheese")
+    @recipe.add_ingredient(@ingredient1, 2)
+    @recipe.add_ingredient(@ingredient2, 8)
+  end
 
-  # pry(main)> require './lib/pantry'
-  # # => true
-  #
-  # pry(main)> require './lib/ingredient'
-  # # => true
-  #
-  # pry(main)> require './lib/recipe'
-  # # => true
-  #
-  # pry(main)> pantry = Pantry.new
-  # # => #<Pantry:0x007fd8858863b8...>
-  #
-  # pry(main)> ingredient1 = Ingredient.new("Cheese", "C", 50)
-  # # => #<Ingredient:0x007fd885846e20...>
-  #
-  # pry(main)> ingredient2 = Ingredient.new("Macaroni", "oz", 200)
-  # # => #<Ingredient:0x007fd88582ed98...>
-  #
-  # pry(main)> recipe = Recipe.new("Mac and Cheese")
-  # # => #<Recipe:0x007fd885050fe0...>
-  #
-  # pry(main)> recipe.add_ingredient(ingredient1, 2)
-  #
-  # pry(main)> recipe.add_ingredient(ingredient2, 8)
-  #
-  # pry(main)> pantry.stock
-  # # => {}
-  #
-  # pry(main)> pantry.stock_check(ingredient1)
-  # # => 0
-  #
-  # pry(main)> pantry.restock(ingredient1, 5)
-  #
-  # pry(main)> pantry.restock(ingredient1, 10)
-  #
-  # pry(main)> pantry.stock_check(ingredient1)
-  # # => 15
-  #
-  # pry(main)> pantry.enough_ingredients_for?(recipe)
-  # # => false
-  #
-  # pry(main)> pantry.restock(ingredient2, 7)
-  #
-  # pry(main)> pantry.enough_ingredients_for?(recipe)
-  # # => false
-  #
-  # pry(main)> pantry.restock(ingredient2, 1)
-  #
-  # pry(main)> pantry.enough_ingredients_for?(recipe)
-  # # => true
+  def test_it_exists
+    assert_instance_of Pantry, @pantry
+    assert_instance_of Ingredient, @ingredient1
+    assert_instance_of Ingredient, @ingredient2
+    assert_instance_of Recipe, @recipe
+  end
+
+  def test_it_has_attributes
+    assert_equal Hash.new(0), @pantry.stock
+  end
+
+  def test_stock_check_starts_at_zero
+    assert_equal 0, @pantry.stock_check(@ingredient1)
+  end
+
+  def test_it_can_be_restocked
+    @pantry.restock(@ingredient1, 5)
+    @pantry.restock(@ingredient1, 10)
+
+    assert_equal 15, @pantry.stock_check(@ingredient1)
+  end
+
+  def test_enough_ingredients_for_starts_false
+    refute @pantry.enough_ingredients_for?(@recipe)
+  end
+
+  def test_it_can_test_for_enough_ingredients
+    skip
+    @pantry.restock(@ingredient2, 7)
+    @pantry.restock(@ingredient2, 1)
+
+    assert @pantry.enough_ingredients_for?(@recipe)
+  end
+end
